@@ -15,7 +15,7 @@ namespace Ych2.DBCon
                 decimal? sum = Request.Sum(x => x.TotalAmountReq);
                 if (sum > 10000 && sum < 50000)
                     return "5%";
-                else if (sum >= 50000 && sum < 30000)
+                else if (sum >= 50000 && sum < 300000)
                     return "10%";
                 else if (sum >= 30000 )
                     return "15%";

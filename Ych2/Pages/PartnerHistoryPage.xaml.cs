@@ -1,120 +1,82 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Ych2.DBCon;
 
 namespace Ych2.Pages
 {
-    /// <summary>
-    /// Логика взаимодействия для PartnerHistoryPage.xaml
-    /// </summary>
     public partial class PartnerHistoryPage : Page
     {
-        private Partners currentPartner;
-
-        public class SaleHistoryItem
-        {
-            public string ProductName { get; set; }
-            public int Quantity { get; set; }
-            public DateTime? SaleDate { get; set; }
-            public decimal? Amount { get; set; }
-            public string SalePoint { get; set; }
-        }
-
         public PartnerHistoryPage(Partners partner)
         {
             InitializeComponent();
-            currentPartner = partner;
-            LoadPartnerInfo();
-            LoadSaleHistory();
+            txtPartnerName.Text = partner.NamePartner;
+            txtPartnerPhone.Text = partner.Phone;
+            LoadSales(partner.Id_partner);
         }
 
-        private void LoadPartnerInfo()
-        {
-            txtPartnerName.Text = currentPartner.NamePartner;
-            txtPartnerInfo.Text = $"{currentPartner.TypeOfBusiness?.NameBusiness} | Директор: {currentPartner.SurnameDirector} {currentPartner.NameDirector} | Телефон: {currentPartner.Phone}";
-        }
-
-        private void LoadSaleHistory()
+        private void LoadSales(int partnerId)
         {
             try
-            {
-               
-                var salePoints = DBCon.Conn.comfortEntities.SalePoint.Where(sp => sp.Id_partner == currentPartner.Id_partner).Select(sp => sp.Id_point).ToList();
-                var sales = DBCon.Conn.comfortEntities.SaleHistory.Where(sh => salePoints.Contains(sh.Id_point ?? 0)).ToList();
-                var historyList = new List<SaleHistoryItem>();
-                decimal totalAmount = 0;
+            {              
+                var points = DBCon.Conn.comfortEntities.SalePoint.Where(p => p.Id_partner == partnerId).ToList();
+                if (points.Count == 0)
+                {
+                    HistoryLv.ItemsSource = null;
+                    txtTotal.Text = "0 руб.";
+                    return;
+                }
+                List<int> pointIds = new List<int>();
+                foreach (var point in points)
+                {
+                    pointIds.Add(point.Id_point);
+                }
+                var sales = DBCon.Conn.comfortEntities.SaleHistory.Where(s => pointIds.Contains(s.Id_point ?? 0)).ToList();
+                if (sales.Count == 0)
+                {
+                    HistoryLv.ItemsSource = null;
+                    txtTotal.Text = "0 руб.";
+                    return;
+                }
+                var list = new List<object>();
+                decimal total = 0;
                 foreach (var sale in sales)
                 {
-                    var product = DBCon.Conn.comfortEntities.Products.FirstOrDefault(p => p.Id_product == sale.Id_product);
-                    var salePoint = DBCon.Conn.comfortEntities.SalePoint.FirstOrDefault(sp => sp.Id_point == sale.Id_point);
-                    var historyItem = new SaleHistoryItem
+                    var product = DBCon.Conn.comfortEntities.Products.FirstOrDefault(pr => pr.Id_product == sale.Id_product);
+                    string productName = "Неизвестно";
+                    if (product != null)
                     {
-                        ProductName = product?.NameProduct ?? "Неизвестный товар",
+                        productName = product.NameProduct;
+                    }
+                    var point = DBCon.Conn.comfortEntities.SalePoint.FirstOrDefault(p => p.Id_point == sale.Id_point);
+                    string pointName = "Неизвестно";
+                    if (point != null)
+                    {
+                        pointName = point.NamePoint;
+                    }
+                    total = total + (sale.Amount ?? 0);
+                    list.Add(new
+                    {
+                        ProductName = productName,
                         Quantity = sale.Quantity ?? 0,
-                        SaleDate = null,
-                        Amount = sale.Amount,
-                        SalePoint = salePoint?.NamePoint ?? "Неизвестная точка"
-                    };
-                    historyList.Add(historyItem);
-                    if (sale.Amount.HasValue)
-                        totalAmount += sale.Amount.Value;
+                        Amount = (sale.Amount ?? 0).ToString("N0") + " руб.",
+                        Point = pointName
+                    });
                 }
-                if (historyList.Count == 0)
-                {
-                    LoadRequestsHistory(historyList, ref totalAmount);
-                }
-                HistoryLv.ItemsSource = historyList;
-                txtTotalAmount.Text = $"{totalAmount:N2} руб.";
-                if (historyList.Count == 0)
-                {
-                    txtTotalAmount.Text = "0.00 руб.";
-                    MessageBox.Show("У данного партнера нет истории продаж", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
+
+                HistoryLv.ItemsSource = list;
+                txtTotal.Text = total.ToString("N0") + " руб.";
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка загрузки истории: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-        private void LoadRequestsHistory(List<SaleHistoryItem> historyList, ref decimal totalAmount)
-        {
-            var requests = DBCon.Conn.comfortEntities.Request.Where(r => r.Id_partner == currentPartner.Id_partner && r.Id_status == 5) .ToList();
-           foreach (var request in requests)
-            {
-                var details = DBCon.Conn.comfortEntities.RequestDetails.Where(rd => rd.Id_request == request.Id_request).ToList();
-                foreach (var detail in details)
-                {
-                    var product = DBCon.Conn.comfortEntities.Products.FirstOrDefault(p => p.Id_product == detail.Id_product);
-                    var historyItem = new SaleHistoryItem
-                    {
-                        ProductName = product?.NameProduct ?? "Неизвестный товар",
-                        Quantity = detail.Quantity ?? 0,
-                        SaleDate = request.RequestDate,
-                        Amount = request.TotalAmountReq,
-                        SalePoint = "Заказ"
-                    };
-                    historyList.Add(historyItem);
-
-                    if (request.TotalAmountReq.HasValue)
-                        totalAmount += request.TotalAmountReq.Value;
-                }
+                MessageBox.Show("Ошибка: " + ex.Message);
             }
         }
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new PartnerListPage());
+            NavigationService.GoBack();
         }
     }
 }

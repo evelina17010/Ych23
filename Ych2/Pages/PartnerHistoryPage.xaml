@@ -3,44 +3,35 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Ych2.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-       Title="PartnerHistoryPage" Background="White">
-
+      Title="История продаж" Background="White">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
-
-        <Border Grid.Row="0" Background="#355CBD" Padding="20">
-            <StackPanel>
-                <TextBlock x:Name="txtPartnerName" FontSize="28" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
-                <TextBlock x:Name="txtPartnerInfo" FontSize="16" Foreground="White" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+        <Border Grid.Row="0" Background="#355CBD">
+            <StackPanel VerticalAlignment="Center" Margin="20">
+                <TextBlock x:Name="txtPartnerName" FontSize="20" FontWeight="Bold" Foreground="White"/>
+                <TextBlock x:Name="txtPartnerPhone" FontSize="14" Foreground="White"/>
             </StackPanel>
         </Border>
-        <ListView x:Name="HistoryLv" Grid.Row="1" Margin="20">
+        <ListView x:Name="HistoryLv" Grid.Row="1" Margin="10">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Наименование продукции" Width="350" DisplayMemberBinding="{Binding ProductName}"/>
-                    <GridViewColumn Header="Количество" Width="150" DisplayMemberBinding="{Binding Quantity}"/>
-                    <GridViewColumn Header="Дата продажи" Width="200" DisplayMemberBinding="{Binding SaleDate}"/>
-                    <GridViewColumn Header="Сумма" Width="150" DisplayMemberBinding="{Binding Amount}"/>
-                    <GridViewColumn Header="Точка продажи" Width="250" DisplayMemberBinding="{Binding SalePoint}"/>
+                    <GridViewColumn Header="Товар" Width="300" DisplayMemberBinding="{Binding ProductName}"/>
+                    <GridViewColumn Header="Кол-во" Width="80" DisplayMemberBinding="{Binding Quantity}"/>
+                    <GridViewColumn Header="Сумма" Width="100" DisplayMemberBinding="{Binding Amount}"/>
+                    <GridViewColumn Header="Точка" Width="200" DisplayMemberBinding="{Binding Point}"/>
                 </GridView>
             </ListView.View>
         </ListView>
-
-        <Border Grid.Row="2" Background="#F0F0F0" Padding="15">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <TextBlock Text="Общая сумма продаж:" FontSize="18" FontWeight="Bold" Margin="0,0,10,0"/>
-                <TextBlock x:Name="txtTotalAmount" FontSize="18" FontWeight="Bold" Foreground="#355CBD"/>
-            </StackPanel>
-        </Border>
-        <Button Content="НАЗАД" Name="btnBack" Grid.Row="2" Width="150" Height="40" 
-                Click="btnBack_Click" Background="#355CBD" Foreground="White" 
-                HorizontalAlignment="Left" Margin="20,0,0,0" VerticalAlignment="Center"/>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10" VerticalAlignment="Center">
+            <TextBlock Text="Всего:" FontSize="16" FontWeight="Bold" Margin="0,0,10,0"/>
+            <TextBlock x:Name="txtTotal" FontSize="16" FontWeight="Bold" Foreground="#355CBD"/>
+        </StackPanel>
+        <Button Content="Назад" Name="btnBack" Grid.Row="2" Width="100" Height="35"  Click="btnBack_Click" Background="#355CBD" Foreground="White"  HorizontalAlignment="Left" Margin="10"/>
     </Grid>
 </Page>
