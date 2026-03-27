@@ -1,0 +1,59 @@
+﻿<Page x:Class="Ych2.Pages.AddEditPartners"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Ych2.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="650" d:DesignWidth="800"
+      Title="AddEditPartners" Background="White">
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="10">
+                <TextBlock VerticalAlignment="Center">Наименование</TextBlock>
+                <TextBox x:Name="NamePartnertxb" Text="{Binding NamePartner}" Width="300" Height="35" Margin="15 0 0 0"></TextBox>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="10">
+                <TextBlock VerticalAlignment="Center">Тип</TextBlock>
+                <ComboBox Name="typecmb" SelectedItem="{Binding TypeOfBusiness}" Width="300"  Height="35" Margin="15 0 0 0"></ComboBox>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="10">
+                <TextBlock VerticalAlignment="Center">Юр. адрес</TextBlock>
+                <TextBox x:Name="UrAdresstxb" Text="{Binding UrAdress}" Width="300"  Height="35" Margin="15 0 0 0"></TextBox>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="10">
+                <TextBlock VerticalAlignment="Center">ИНН</TextBlock>
+                <TextBox x:Name="INNtxb"  Text="{Binding INN}" Width="300"  Height="35" Margin="15 0 0 0"></TextBox>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="10">
+                <TextBlock VerticalAlignment="Center">Фамилия директора</TextBlock>
+                <TextBox x:Name="SurnameDirectortxb"  Text="{Binding SurnameDirector}" Width="300"  Height="35" Margin="15 0 0 0"></TextBox>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="10">
+                <TextBlock VerticalAlignment="Center">Имя директора</TextBlock>
+                <TextBox x:Name="NameDirectortxb" Text="{Binding NameDirector}" Width="300"  Height="35" Margin="15 0 0 0"></TextBox>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="10">
+                <TextBlock VerticalAlignment="Center">Отчество директора</TextBlock>
+                <TextBox x:Name="PatronumicDirectortxb" Text="{Binding PatronumicDirector}" Width="300"  Height="35" Margin="15 0 0 0"></TextBox>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="10">
+                <TextBlock VerticalAlignment="Center">Номер телефона</TextBlock>
+                <TextBox x:Name="Phonetxb" Text="{Binding Phone}" Width="300"  Height="35" Margin="15 0 0 0"></TextBox>
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="10">
+                <TextBlock VerticalAlignment="Center">Email</TextBlock>
+                <TextBox x:Name="Emailtxb" Text="{Binding Email}" Width="300"  Height="35" Margin="15 0 0 0"></TextBox>
+            </StackPanel>
+
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Margin="10">
+                <TextBlock VerticalAlignment="Center">Рейтинг</TextBlock>
+                <TextBox x:Name="Raitingtxb" Text="{Binding Raiting}" Width="300" Height="35" Margin="15 0 0 0"></TextBox>
+            </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="Сохранить" Name="btnSave" Margin="10 30 5 10" Width="150" Height="50" Click="btnSave_Click"  Background="#355CBD" Foreground="White" Padding="5" HorizontalAlignment="Center"/>
+                <Button Content="Отменить" Name="btnOtmena" Margin="10 30 5 10" Width="150" Height="50" Click="btnOtmena_Click"  Background="White"   Foreground="#355CBD" Padding="5" BorderBrush="#355CBD" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>
