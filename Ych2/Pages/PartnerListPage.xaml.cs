@@ -1,17 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Ych2.DBCon;
 
 namespace Ych2.Pages
@@ -49,12 +40,9 @@ namespace Ych2.Pages
             if (!string.IsNullOrWhiteSpace(SearchTextBox.Text))
             {
                 string searchText = SearchTextBox.Text.ToLower();
-
-                filteredPartners = filteredPartners.Where(p =>
-                    (p.NamePartner != null && p.NamePartner.ToLower().Contains(searchText)) ||
+                filteredPartners = filteredPartners.Where(p => (p.NamePartner != null && p.NamePartner.ToLower().Contains(searchText)) ||
                     (p.TypeOfBusiness != null && p.TypeOfBusiness.NameBusiness != null && p.TypeOfBusiness.NameBusiness.ToLower().Contains(searchText)) ||
-                    (p.Phone != null && p.Phone.ToLower().Contains(searchText)) ||
-                    (p.SurnameDirector != null && p.SurnameDirector.ToLower().Contains(searchText))).ToList();
+                    (p.Phone != null && p.Phone.ToLower().Contains(searchText)) ||(p.SurnameDirector != null && p.SurnameDirector.ToLower().Contains(searchText))).ToList();
             }
             if (SortComboBox.SelectedItem != null)
             {
@@ -75,7 +63,6 @@ namespace Ych2.Pages
 
             PartnersLv.ItemsSource = filteredPartners;
         }
-
         private void PartnersLv_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             selectedPartner = PartnersLv.SelectedItem as Partners;
@@ -98,35 +85,34 @@ namespace Ych2.Pages
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            var selpartner = PartnersLv.SelectedItem as Partners;
-            if (selpartner != null)
+            if (selectedPartner != null)
             {
-                NavigationService.Navigate(new AddEditPartners(selpartner));
+                NavigationService.Navigate(new AddEditPartners(selectedPartner));
             }
             else
             {
-                MessageBox.Show("ВЫБЕРИ ПАРНЕРА", "ТЫКНИ УЖЕ КУДА-НИБУДЬ", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("ВЫБЕРИ ПАРНЕРА", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             if (selectedPartner == null)
             {
-                MessageBox.Show("Выберите партнера для удаления!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Сначала выберите партнера!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+            MessageBoxResult result = MessageBox.Show( $"Вы точно хотите удалить партнера \"{selectedPartner.NamePartner}\"?","Подтверждение удаления",
+                MessageBoxButton.YesNo,MessageBoxImage.Question);
 
-            MessageBoxResult result = MessageBox.Show($"Вы уверены, что хотите удалить партнера \"{selectedPartner.NamePartner}\"?",
-                "Подтверждение удаления", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 try
                 {
                     DBCon.Conn.comfortEntities.Partners.Remove(selectedPartner);
                     DBCon.Conn.comfortEntities.SaveChanges();
-                    MessageBox.Show("Партнер успешно удален!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                    LoadPartners(); 
+
+                    MessageBox.Show("Партнер удален!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                    LoadPartners();
                     selectedPartner = null;
                 }
                 catch (Exception ex)
@@ -135,16 +121,16 @@ namespace Ych2.Pages
                 }
             }
         }
+
         private void btnHistory_Click(object sender, RoutedEventArgs e)
         {
-            var selpartner = PartnersLv.SelectedItem as Partners;
-            if (selpartner != null)
+            if (selectedPartner != null)
             {
-                NavigationService.Navigate(new PartnerHistoryPage(selpartner));
+                NavigationService.Navigate(new PartnerHistoryPage(selectedPartner));
             }
             else
             {
-                MessageBox.Show("ВЫБЕРИ ПАРТНЕРА ДЛЯ ПРОСМОТРА ИСТОРИИ", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("ВЫБЕРИ ПАРТНЕРА", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

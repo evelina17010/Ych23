@@ -26,7 +26,7 @@
             </ComboBox>
         </StackPanel>
 
-        <ListView x:Name="PartnersLv" Grid.Row="1">
+        <ListView x:Name="PartnersLv" Grid.Row="1" SelectionChanged="PartnersLv_SelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border BorderBrush="Black" BorderThickness="1" Margin="10" Width="700" Height="170" HorizontalAlignment="Center">
