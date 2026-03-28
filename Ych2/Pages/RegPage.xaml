@@ -26,7 +26,7 @@
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
-                <TextBlock Width="120">Дата рождения</TextBlock>
+                <TextBlock Width="170">Дата рождения</TextBlock>
                 <DatePicker x:Name="dpBirthday" Width="200"/>
             </StackPanel>
 

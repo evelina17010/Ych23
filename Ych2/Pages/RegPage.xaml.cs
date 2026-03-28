@@ -24,27 +24,27 @@ namespace Ych2.Pages
                 string.IsNullOrWhiteSpace(txtPassportSeria.Text) || string.IsNullOrWhiteSpace(txtPassportNumber.Text) ||
                 string.IsNullOrWhiteSpace(txtLogin.Text) || string.IsNullOrWhiteSpace(pswPassword.Password))
             {
-                MessageBox.Show("Заполните все поля!!!!");
+                MessageBox.Show("ТЫ ВСЕ ПОЛЯ НЕ МОЖЕШЬ ЧТО-ЛИ ЗАПОЛНИТЬ!!!!");
             }
             else if (txtPassportSeria.Text.Length != 4)
             {
-                MessageBox.Show("Серия паспорта - 4 цифры!");
+                MessageBox.Show("Серия паспорта  4 цифры!ОДИН ДВА ТРИ ЧЕТЫРЕ");
             }
             else if (txtPassportNumber.Text.Length != 6)
             {
-                MessageBox.Show("Номер паспорта - 6 цифр!");
+                MessageBox.Show("Номер паспорта - 6 цифр! УМЕЕШЬ ДО ШЕСТИ СЧИТАТЬ?");
             }
             else if (Conn.comfortEntities.Logins.Any(x => x.Login == txtLogin.Text))
             {
-                MessageBox.Show("Логин занят");
+                MessageBox.Show("Логин занят. Эх беда беда");
             }
             else if (pswPassword.Password.Length < 3)
             {
-                MessageBox.Show("Пароль должен быть минимум 3 символа!");
+                MessageBox.Show("Пароль должен быть минимум 3 символа.Будь пориганальней");
             }
             else if (pswPassword.Password != pswConfirmPassword.Password)
             {
-                MessageBox.Show("Пароли не совпадают!");
+                MessageBox.Show("Ты рыба?Пароли не совпадают.Ты за 5 сек пароль свой забыл");
             }
             else
             {
@@ -72,12 +72,12 @@ namespace Ych2.Pages
 
                     Conn.comfortEntities.SaveChanges();
 
-                    MessageBox.Show("Регистрация успешна!");
+                    MessageBox.Show("ОООООООООО ЧУДО!!!!!!!Регистрация УСПЕШНА!");
                     NavigationService.GoBack();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Ошибка: " + ex.Message);
+                    MessageBox.Show($"Ошибка:{ex.Message} ");
                 }
             }
         }
